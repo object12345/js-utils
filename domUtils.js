@@ -1,5 +1,5 @@
 // 兼容IE8大全
-var domUtils = {
+var $$ = {
     // 事件
     getEvent: function (event) {
         return event ? event : window.event;
@@ -53,17 +53,32 @@ var domUtils = {
     scrollLeft: document.documentElement.scrollLeft || document.body.scrollLeft,
     // 节点
     hasClass: function (el, clsName) {
-        var reg = new RegExp('(^|\\s)' + clsName + '(\\s|$)');
+        var reg = new RegExp('(^|\\s)' + clsName.trim() + '(\\s|$)');
         return reg.test(el.className);
     },
     addClass: function (el, clsName) {
-        if (!hasClass(el, clsName)) {
-            var newCls = el.className.split(' ')
-            newCls.push(clsName)
-            el.className = newCls.join(' ')
+        var spaceReg = new RegExp('^\\s+$');
+        if (!clsName.match(spaceReg) && !this.hasClass(el, clsName)) {
+            el.className += ' ' + clsName.trim();
+        }
+    },
+    removeClass: function (el, clsName) {
+        var spaceReg = new RegExp('^\\s+$');
+        if (!clsName.match(spaceReg) && this.hasClass(el, clsName)) {
+            var reg = new RegExp('(\\s|^)' + clsName.trim() + '(\\s|$)');
+            el.className = el.className.replace(reg, ' ').trim();
+        }
+    },
+    toggleClass: function (el, clsName) {
+        clsName = clsName.trim();
+        if (this.hasClass(el, clsName)) {
+            this.removeClass(el, clsName);
+        } else {
+            this.addClass(el, clsName);
         }
     },
     getElementsByClassName: function (clsName, parentId) {
+        clsName = clsName.trim();
         var tags;
         var parent = document.getElementById(parentId);
         if (parent) {
@@ -73,7 +88,7 @@ var domUtils = {
         }
         var arr = [];
         for (var i = 0; i < tags.length; i++) {
-            if (hasClass(clsName)) {
+            if (this.hasClass(clsName)) {
                 arr.push(tags[i]);
             };
         };
