@@ -7,6 +7,7 @@ var $$ = {
     getTarget: function (event) {
         return event.target || event.srcElement;
     },
+    
     addEvent: function (element, event, fn) {
         if (element.addEventListener) {
             element.addEventListener(event, fn, false);
@@ -91,11 +92,11 @@ var $$ = {
             if (this.hasClass(clsName)) {
                 arr.push(tags[i]);
             };
-        };
+        }
         return arr;
     },
     settingOfAttr: function (el, name, value) {
-        const prefix = 'data-';
+        var prefix = 'data-';
         name = prefix + name;
         if (value) {
             return el.setAttribute(name, value);
@@ -108,28 +109,28 @@ var $$ = {
             return obj.nextElementSibling;
         } else {
             return obj.nextSibling;
-        };
+        }
     },
     prenode: function (obj) {
         if (obj.previousElementSibling) {
             return obj.previousElementSibling;
         } else {
             return obj.previousSibling;
-        };
+        }
     },
     firstnode: function (obj) {//获取第一个子节点
         if (obj.firstElementChild) {
             return obj.firstElementChild;//非IE678支持
         } else {
             return obj.firstChild;//IE678支持
-        };
+        }
     },
     lastnode: function (obj) {//获取最后一个子节点
         if (obj.lastElementChild) {
             return obj.lastElementChild;//非IE678支持
         } else {
             return obj.lastChild;//IE678支持
-        };
+        }
     },
     // 其他
     vendor: (function () {
@@ -158,6 +159,61 @@ var $$ = {
             }
             return this.vendor + style.charAt(0).toUpperCase() + style.substr(1);
         }
+    },
+    formatDate: function (date, fmt) {
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+        }
+        var o = {
+            'M+': date.getMonth() + 1,
+            'd+': date.getDate(),
+            'h+': date.getHours(),
+            'm+': date.getMinutes(),
+            's+': date.getSeconds()
+        };
+        for (var k in o) {
+            // 一定要加括号，不然正则匹配不到
+            if (new RegExp('(' + k + ')').test(fmt)) {
+                var str = o[k] + '';
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : ('00' + str).substr(str.length));
+            }
+        }
+        return fmt;
+    },
+    debounce: function (fn, delay) {
+        var debounceTimer;
+        return function () {
+            // 绑定到调用函数的对象上，如果在 setTimeout 里直接绑定则会绑定到 window 对象。
+            var context = this;
+            var args = arguments;
+            if (debounceTimer) {
+                clearTimeout(debounceTimer);
+            }
+            debounceTimer = setTimeout(function () {
+                fn.apply(context, args);
+            }, delay);
+        }
+    },
+    throttle: function (fn, threshhold) {
+        var lastTime, throttle, throttleTimer;
+        threshhold || (threshhold = 250);
+        return function () {
+            // 绑定到调用函数的对象上，如果在 setTimeout 里直接绑定则会绑定到 window 对象。
+            var context = this;
+            var args = arguments;
+            var nowTime = +new Date();
+            if (lastTime && nowTime < lastTime + threshhold) {
+                clearTimeout(throttleTimer);
+                // 保证在当前时间区间结束后，再执行一次 fn
+                throttleTimer = setTimeout(function () {
+                    lastTime = nowTime;
+                    fn.apply(context, args);
+                }, threshhold);
+                // 在时间区间的最开始和到达指定间隔的时候执行一次 fn
+            } else {
+                lastTime = nowTime;
+                fn.apply(context, args);
+            }
+        }
     }
-
 }
