@@ -108,6 +108,17 @@ const throttle = function (fn, threshhold) {
     }
 }
 
+const removeElementFromArray = function (array, element) {
+    let _array = [...array]
+    let index = _array.findIndex((value) => {
+      return value === element
+    })
+    if (index !== -1) {
+      _array.splice(index, 1)
+    }
+    return _array
+  }
+
 export {
     hasClass,
     addClass,
@@ -116,5 +127,6 @@ export {
     prefixStyle,
     formatDate,
     debounce,
-    throttle
+    throttle,
+    removeElementFromArray
 }
