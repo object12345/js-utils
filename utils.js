@@ -7,6 +7,7 @@ const addClass = function (el, clsName) {
     const spaceReg = new RegExp('^\\s+$')
     if (!clsName.match(spaceReg) && !hasClass(el, clsName)) {
         el.className += ' ' + clsName.trim()
+        el.className = el.className.trim()
     }
 }
 
@@ -111,13 +112,13 @@ const throttle = function (fn, threshhold) {
 const removeElementFromArray = function (array, element) {
     let _array = [...array]
     let index = _array.findIndex((value) => {
-      return value === element
+        return value === element
     })
     if (index !== -1) {
-      _array.splice(index, 1)
+        _array.splice(index, 1)
     }
     return _array
-  }
+}
 
 export {
     hasClass,

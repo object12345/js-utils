@@ -61,6 +61,7 @@ var $$ = {
         var spaceReg = new RegExp('^\\s+$');
         if (!clsName.match(spaceReg) && !this.hasClass(el, clsName)) {
             el.className += ' ' + clsName.trim();
+            el.className = el.className.trim();
         }
     },
     removeClass: function (el, clsName) {
