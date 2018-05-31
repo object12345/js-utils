@@ -120,6 +120,36 @@ const removeElementFromArray = function (array, element) {
     return _array
 }
 
+// 设置cookie
+const setCookie = function (name, value, expiredays) {
+    // 获取当前时间
+    var exdate = new Date();
+    // 将date设置为 expiredays 天以后的时间
+    exdate.setDate(exdate.getDate() + expiredays);
+    document.cookie = name + '=' + escape(value) + ";" + "path=/;" +
+        ((expiredays === null) ? '' : ';expires=' + exdate.toGMTString());
+}
+
+// 读取cookie
+const getCookie = function (name) {
+    var reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    var arr = document.cookie.match(reg);
+    if (arr) {
+        return unescape(arr[2]);
+    } else {
+        return null;
+    }
+}
+
+// 删除cookies
+const delCookie = function (name) {
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval = getCookie(name);
+    if (cval !== null)
+        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+}
+
 export {
     hasClass,
     addClass,
@@ -129,5 +159,7 @@ export {
     formatDate,
     debounce,
     throttle,
-    removeElementFromArray
+    setCookie,
+    getCookie,
+    delCookie
 }
