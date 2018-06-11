@@ -123,32 +123,31 @@ const removeElementFromArray = function (array, element) {
 // 设置cookie
 const setCookie = function (name, value, expiredays) {
     // 获取当前时间
-    var exdate = new Date();
+    var exdate = new Date()
     // 将date设置为 expiredays 天以后的时间
-    exdate.setDate(exdate.getDate() + expiredays);
+    exdate.setDate(exdate.getDate() + expiredays)
     document.cookie = name + '=' + escape(value) + ";" + "path=/;" +
-        ((expiredays === null) ? '' : ';expires=' + exdate.toGMTString());
+        ((expiredays === null) ? '' : ';expires=' + exdate.toGMTString())
 }
 
 // 读取cookie
 const getCookie = function (name) {
-    var reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    var arr = document.cookie.match(reg);
+    var reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)")
+    var arr = document.cookie.match(reg)
     if (arr) {
-        return unescape(arr[2]);
+        return unescape(arr[2])
     } else {
-        return null;
+        return null
     }
 }
 
 // 删除cookies
-const delCookie = function (name) {
-    var exp = new Date();
-    exp.setTime(exp.getTime() - 1);
-    var cval = getCookie(name);
-    if (cval !== null)
-        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
-}
+const deleteCookies = function (name) {
+    var value = getCookies(name)
+    if (value !== null) {
+        setCookies(name, '', -1)
+    }
+};
 
 export {
     hasClass,
@@ -161,5 +160,5 @@ export {
     throttle,
     setCookie,
     getCookie,
-    delCookie
+    deleteCookies
 }
