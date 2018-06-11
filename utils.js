@@ -141,9 +141,9 @@ const getCookie = function (name) {
     }
 }
 
-// 删除cookies
-const deleteCookies = function (name) {
-    var value = getCookies(name)
+// 删除cookie
+const deleteCookie = function (name) {
+    var value = getCookie(name)
     if (value !== null) {
         setCookies(name, '', -1)
     }
@@ -160,5 +160,5 @@ export {
     throttle,
     setCookie,
     getCookie,
-    deleteCookies
+    deleteCookie
 }
